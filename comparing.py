@@ -1,7 +1,4 @@
 import logging
-from operator import methodcaller
-from selenium import webdriver
-from svn import remote
 from config import *
 import numpy as np
 import os

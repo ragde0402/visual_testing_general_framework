@@ -1,11 +1,10 @@
-from selenium import webdriver
+from selenium.webdriver import FirefoxOptions, Remote
 import argparse
 import os
 import comparing
 import test
 from config import *
 from svn_utils import SVN_UTILS
-from microservices import *
 from microservices.example import *
 
 
