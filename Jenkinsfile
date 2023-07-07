@@ -3,6 +3,7 @@ import java.util.Date;
 
 microservices = ["EXAMPLE"] // add all your microservices names
 environments = ["ENV", "ENV1"]
+sources = ["svn", "ftp", "zip"]
 pickedMicroservices = []
 choices = ["Take screenshots and save in SVN", "Compare screenshots"]
 projectName = "Your project name"
@@ -18,6 +19,7 @@ pipeline{
     parameters{
         choice(name:'choice', choices: choices, description: 'Choose what to do.')
         choice(name:'environment', choices: environments, description: 'Choose environment')
+        choice(name:'source', choices: sources, description: 'Choose source')
         booleanParam(defaultValue: true, name: "Publish", description: "Publish report")
         booleanParam(defaultValue: true, name: 'EXAMPLE', description: 'Example') // add booleanParam for all that in microservices list
     }
@@ -47,16 +49,20 @@ pipeline{
                     """
 					
 					createFolder(archive)
-
-//                  Use environment variables previously saved in jenkins
-					withCredentials([usernamePassword(credentialsId: 'CREDS_ID', passwordVariable: 'PWS', usernameVariable: 'USER')]) {
-					    def svn_path = tool name: 'subversion', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-						sh("svn --username ${USER} --password ${PWS} import -m \'Auto folder generation\' ./${archive}/ ${svnRoot}/archive/${archive}")
-					}
                 }
             }
         }
-		
+		stage('svn preparation'){
+            when {
+                expression { return params.source == "svn"}
+            }
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'CREDS_ID', passwordVariable: 'PWS', usernameVariable: 'USER')]) {
+					    def svn_path = tool name: 'subversion', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
+						sh("svn --username ${USER} --password ${PWS} import -m \'Auto folder generation\' ./${archive}/ ${svnRoot}/archive/${archive}")
+                }
+            }
+		}
         stage('Screenshots creation'){
             when {
                 expression { return params.choice == "Take screenshots and save in SVN"}
@@ -65,7 +71,7 @@ pipeline{
                 withCredentials([usernamePassword(credentialsId: 'CREDS_ID', passwordVariable: 'PWS', usernameVariable: 'USER')])  {
                     script{
                         for (service in pickedMicroservices){
-                                sh("python3 main.py -s ${svnRoot} -u ${USER} -p ${PWS} -n ${service} -m 'new_screenshots' -e ${params.environment}")
+                                sh("python3 main.py -s ${svnRoot} -u ${USER} -p ${PWS} -n ${service} -m 'new_screenshots' -e ${params.environment} -d ${params.source}")
                             }
                         }
                     }

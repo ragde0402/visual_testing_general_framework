@@ -67,7 +67,8 @@ if __name__ == "__main__":
                                             args.user,
                                             args.password,
                                             args.name.upper(),
-                                            args.environment.upper(), storage)
+                                            args.environment.upper(),
+                                            storage)
     elif args.method == "check_screenshots":
         comparing.compare_images(address,
                                  args.user,
@@ -75,7 +76,8 @@ if __name__ == "__main__":
                                  args.name.upper(),
                                  args.csvfile,
                                  args.archive,
-                                 args.environment.upper())
+                                 args.environment.upper(),
+                                 storage)
     elif args.method == "test":
         test.test(args.name.upper(),
                   args.environment.upper())
