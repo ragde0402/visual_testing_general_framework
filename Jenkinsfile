@@ -54,12 +54,14 @@ pipeline{
         }
 		stage('svn preparation'){
             when {
-                expression { return params.source == "svn"}
+                expression { return params.source == "svn" }
             }
             steps{
                 withCredentials([usernamePassword(credentialsId: 'CREDS_ID', passwordVariable: 'PWS', usernameVariable: 'USER')]) {
-					    def svn_path = tool name: 'subversion', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-						sh("svn --username ${USER} --password ${PWS} import -m \'Auto folder generation\' ./${archive}/ ${svnRoot}/archive/${archive}")
+					    script {
+					        def svn_path = tool name: 'subversion', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
+						    sh("svn --username ${USER} --password ${PWS} import -m \'Auto folder generation\' ./${archive}/ ${svnRoot}/archive/${archive}")
+                    }
                 }
             }
 		}
