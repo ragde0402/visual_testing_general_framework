@@ -2,3 +2,4 @@ service variable,ENV,ENV1
 EXAMPLE_ROOT_URL,https://example.com,https://example1.com
 EXAMPLE_USER,EXAMPLE_USER,EXAMPLE1_USER
 EXAMPLE_PASS,EXAMPLE_PASS,EXAMPLE1_PASS
+DUCKDUCKGO_ROOT_URL,https://duckduckgo.com/,

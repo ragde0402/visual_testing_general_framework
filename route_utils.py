@@ -16,7 +16,8 @@ class RouteUtils:
 
     # General list of all screenshot name as dictionary microservice_name: list_of_screenshot_names in pattern
     # Microservice name as prefix and including file extension for example .png
-    dict_of_screen_names_for_microservice = {"EXAMPLE": ["EXAMPLE_login_site.png"], }
+    dict_of_screen_names_for_microservice = {"EXAMPLE": ["EXAMPLE_login_site.png"],
+                                             "DUCKDUCKGO": ["DUCKDUCKGO_main_page.png", "DUCKDUCKGO_settings_page.png"],}
 
     def __init__(self):
         pass

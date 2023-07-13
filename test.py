@@ -1,4 +1,5 @@
 from microservices.example import *
+from microservices.duckduckgo import *
 from config import *
 import os
 
